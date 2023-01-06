@@ -21,7 +21,28 @@ stat
  | incrementVar SCO
  | classDeclaration
  | switch_stat
+ |array_stat
  ;
+
+
+array_stat
+        : (decArray) | (decpartArray E arraybody) SCO
+        ;
+        decArray
+        : variableType ID  OB CB SCO
+        ;
+        decpartArray
+        : variableType ID
+        ;
+        arraybody
+        : OB INT_NUM (COM INT_NUM )* CB
+        | OB FLOAT_NUM (COM FLOAT_NUM )* CB
+        | OB STRING (COM STRING )* CB
+        | OB boolValue (COM boolValue )* CB
+        | OB ID CB
+        | OB expr CB
+        ;
+
 
 if_stat
  : IF OP condition CP stat_block (ELSE IF condition)* (ELSE stat_block)?
