@@ -2,16 +2,28 @@
 
 package AST.Operators;
 
-import AST.Expression;
+import AST.Expression.Expression;
 
 public class GreaterOperator extends ComarsionOperator {
 
-
-    GreaterOperator (Expression left , Expression right , boolean result)
+    public GreaterOperator(ComarsionOperator left , ComarsionOperator right)
     {
         this.left = left;
-        this.right =right;
-        this.result =result;
+        this.right = right;
+//        if(this.left > this.right) {
+//            this.node_value = true;
+//        }
+//        else
+//        {
+//            this.node_value = false;
+//        }
 
+    }
+
+
+
+
+    public String toString() {
+        return " GreaterOperator{" + left.toString()+ " > " + right.toString() + '}';
     }
 }

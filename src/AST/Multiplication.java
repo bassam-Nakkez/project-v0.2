@@ -1,5 +1,7 @@
 package AST;
 
+import AST.Expression.Expression;
+
 public class Multiplication extends Expression
 {
 

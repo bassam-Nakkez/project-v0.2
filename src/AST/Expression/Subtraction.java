@@ -1,4 +1,6 @@
-package AST;
+package AST.Expression;
+
+import AST.Expression.Expression;
 
 public class Subtraction extends Expression
 {

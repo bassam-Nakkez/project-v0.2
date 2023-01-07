@@ -1,7 +1,6 @@
 package AST.Operators;
 
-import AST.Expression;
-import AST.Statment;
+import AST.Expression.Expression;
 
 public class Assignment extends Operator {
 
@@ -17,9 +16,6 @@ public class Assignment extends Operator {
 
     @Override
     public String toString() {
-        return "Assignment{" +
-                "left='" + left + '=' +
-                ", right=" + right +
-                '}';
+       return " Assignment{" + left+ " = " + right.toString() + '}';
     }
 }

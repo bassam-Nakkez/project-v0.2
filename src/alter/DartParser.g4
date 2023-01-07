@@ -3,7 +3,7 @@ parser grammar DartParser;
 options { tokenVocab = DartLexer ; }
 
 parse
- :block  EOF
+ : block  EOF
  ;
 
 block
@@ -14,18 +14,25 @@ block
 stat
  : assignment SCO
  | if_stat
- | decFun
  | loops
- | decVar SCO
- | obj_or_fun_or_Other SCO
+ | call SCO
  | incrementVar SCO
- | classDeclaration
  | switch_stat
+ | declaration
  ;
+
 
 if_stat
  : IF OP condition CP stat_block (ELSE IF condition)* (ELSE stat_block)?
  ;
+
+
+declaration
+        :classDeclaration
+        | decVar SCO
+        | decFun
+        |objectDeclaration SCO
+        ;
 
 
 
@@ -33,6 +40,8 @@ stat_block
  : START block (BREAK SCO)? END
  | stat
  ;
+
+
 
 loops
      : do_while_stat
@@ -48,91 +57,95 @@ do_while_stat
  : DO  stat_block WHILE OP condition CP
  ;
 
-obj_or_fun_or_Other
-      : ID DOT funName
-      | funOfObj
+
+call
+      : objectMethod
       | callFunction
+      | objectProperty
+      | callObject
+      | object
       ;
 
-callFunction : ID OP parameters CP;
-funOfObj: ID DOT ID OP parameters CP;
+callFunction : ID OP parameters CP (DOT call)*;
+
+
 incrementVar : ID PP | ID MINMIN;
 
 for_stat : FOR OP forinitstatement? SCO condition? SCO (expr|incrementVar)? CP stat_block     #ClassicForStatement;
 forinitstatement : decVar | assignment;
-condition: comparison | logical | boolValue | ID | obj_or_fun_or_Other;
-//forEch_stat:'(' forrangedeclaration ':' forrangeinitializer ')' stat_block #ForEachStatement
+condition: comparison | logical | boolValue | ID | call;
 
-decFun : returnType funName parameterPartDec functionBody;
-funName : ID;
+decFun : returnType funName parameterPartDec functionBody | arrowFunction;
+arrowFunction : returnType ID ARROW functionBody ;
+anonymousFunction : OP CP functionBody ;
+funName : ID ;
 
 returnType: variableType | VOID ;
 parameterPart : OP parameters  CP;
 
-parameter : variableType ID (E expr)? | (boolValue | expr)? ;
+parameter : variableType ID (E (expr| boolValue))? | (boolValue | expr)?  | declaration | call ;
 
 parameters: parameter (COM parameter)* ;
 
 parameterPartDec : OP parametersDec*  CP;
 
-parameterDec : variableType ID (E expr)? | ID  ;
+parameterDec : variableType ID (E expr)? | ID | this ;
 
 parametersDec: parameterDec (COM parameterDec)* ;
 
 
 
 functionBody : START  block  ( return )* END;
-return : RETURN expr  SCO;
-
+return : RETURN (expr | call)  SCO;
+methodBlock : stat | this;
+methodBody:  START  methodBlock*  ( return )* END;
 
 
 switch_stat : SWITCH OP switch_key CP switchBody;
 switch_key : ID | INT_NUM;
 switchBody: START (CASE ( INT_NUM | STRING_singl )  CO block  (BREAK SCO)* )* ( DEFAULT CO block (BREAK SCO)*)? END ;
 
-//functionType : functionTypeTails | typeNotFunction functionTypeTails ;
-//functionTypeTail : FUNCTION_ typeParameters? parameterTypeList ;
-//functionTypeTails : functionTypeTail QU? functionTypeTails | functionTypeTail;
-//typeNotFunction : VOID_ | typeNotVoidNotFunction ;
 
-//classBody1
-//        : propretes
-//        | classMethods
-//        ;
-//
+ // -------------------- <<  CLass
 
 classDeclaration : ABSTRACT? CLASS type_ID typeParameters? superclass?  interfaces? START classBody END ;
-
 
 propretes : (property)+;
 property : decVar SCO ;
 classMethods : ( method )+;
-method : returnType funName parameterPart functionBody ;
-constructor : funName parameterPart functionBody  ;
- //| ABSTRACT? CLASS mixinApplicationClass ;
+method : returnType funName parameterPart methodBody ;
+constructor : ID parameterPart+ methodBody  ;
+defConstructor :ID OP CP functionBody;
+withConstructors:constructor? ( classMethods | property )* defConstructor? |defConstructor? ( classMethods | property )* constructor?;
 superclass : EXTENDS typeNotVoid mixins? | mixins ;
 interfaces : IMPLEMENTS typeNotVoidList ;
-//typeNotVoid : functionType Q? | typeNotVoidNotFunction ;
-typeNotVoid : funName Q?  | funName COM ID ;
+typeNotVoid : ID Q?  | ID COM ID ;
 typeNotVoidList : typeNotVoid (  typeNotVoid )*;
 mixins : WITH typeNotVoidList ;
 metadata : ( AT metadatum )* ;
-//metadatum : IDENTI | qualifiedName | constructorDesignation arguments ;
 metadatum : identi | qualifiedName ;
-
 typeParameter : metadata identi ( EXTENDS typeNotVoid )? ;
 typeParameters : LT typeParameter ( COM typeParameter )* GT ;
 qualifiedName : type_ID DOT identi | type_ID DOT type_ID DOT identi ;
 
-classBody:propretes*  constructor? classMethods*
-         |constructor? (propretes | classMethods )*
-         | (propretes | classMethods )* constructor?
-         | classMethods* constructor? propretes*
-         ;
+
+//// Object
+
+object : ID OP (objectParameters |STRING_singl) * CP ;
+objectParameter: ID CO (CONST? object | ID | boolValue |number |call |anonymousFunction | STRING | STRING_singl);
+objectParameters : objectParameter ( COM objectParameter)* COM?;
+
+objectProperty:ID DOT ID;
+objectMethod : ID DOT callFunction;
+callObject : ID DOT object;
+objectDeclaration : ID object;
+
+classBody: ( classMethods | property )* withConstructors? ( classMethods | property )* ;
 
 
 decVar
     : (CONST |FINAL? variableType ) ID (E (expr|boolValue))? #varableDeclaration ;
+
 
 variableType
         :INT_TYPE
@@ -143,32 +156,35 @@ variableType
         |VAR
         ;
 
+number : INT_NUM | FLOAT_NUM;
+this :  THIS DOT call | THIS DOT ID;
 
 expr
  : //expr POW<assoc=right> expr           #powExpr
-  MIN expr                           #unaryMinusExpr
- | NOT expr                             #notExpr
- | expr op=(MUL | DIV | MOD) expr       #multiplicationExpr
- | expr op=(P | MIN) expr               #additiveExpr
- | atom                                    #atomExpr
+  MIN expr                             #unaryMinusExpr
+ | expr op = (MUL | DIV | MOD) expr      #multiplicationExpr
+ | expr op=(P | MIN) expr              #additiveExpr
+ | atom                                #atomExpr
  ;
 
 atom
- : OP expr CP             #parExpr
+ :OP expr CP             #parExpr
  |INT_NUM                 #intNumber
  |FLOAT_NUM               #floatNumber
  | ID                     #idAtom
  | STRING                 #stringAtom
+ |this                    #thisClsss
  ;
 
  comparison
- : expr LE expr  #lessEqual
+ : expr LE  expr  #lessEqual
  | expr EGT expr #greaterEqual
  | expr LT expr  #lessOperation
  | expr GT expr  #greaterOperation
  | expr EE expr  #equalOperation
  | expr NE expr  #notEqual
  ;
+
 
  boolValue :  TRUE | FALSE ;
 
@@ -177,15 +193,17 @@ atom
         |logical  op = (AA | OR)  logical
         |comparison
         |BOOL_VALUE
+        |NOT comparison
         |ID;
 
  assignment
-  : ID E expr
-  | ID MULE expr
-  | ID PE expr
-  | ID MODE expr
-  | ID MIE expr
-  | ID SLE expr
+  : (ID | this) E expr
+  | (ID | this) MULE expr
+  | (ID | this) PE expr
+  | (ID | this) MODE expr
+  | (ID | this) MIE expr
+  | (ID | this) SLE expr
+  |
 
   ;
 

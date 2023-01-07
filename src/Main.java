@@ -1,11 +1,3 @@
-import AST.IntNumber;
-import alter.DartLexer;
-import alter.DartParser;
-import alter.Visitor.MyVisitor;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-
 import java.io.IOException;
 
 import static org.antlr.v4.runtime.CharStreams.fromFileName;

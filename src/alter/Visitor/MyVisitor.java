@@ -6,5 +6,13 @@ public class MyVisitor extends DartParserBaseVisitor {
 
 
 
+    public void test()
+    {
+
+
+
+
+    }
+
 
 }

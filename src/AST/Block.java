@@ -8,9 +8,17 @@ public class Block {
 
     List<Statment> statments;
 
-    Block() {
-        this.statments = new ArrayList<Statment>();
 
+    public Block(List<Statment> statments) {
+        this.statments = statments;
+    }
+
+    public List<Statment> getStatments() {
+        return statments;
+    }
+
+    public void setStatments(List<Statment> statments) {
+        this.statments = statments;
     }
 
     public void addStatment(Statment stat) {

@@ -1,38 +1,36 @@
 package AST.Operators;
 
-import AST.Expression;
+import AST.Expression.Expression;
 
 
 
 public abstract class  ComarsionOperator extends Operator {
 
-    public Expression left;
-    public Expression right;
-    public boolean result;
+    public ComarsionOperator left;
+    public ComarsionOperator right;
+    public boolean node_value;
 
-
-    public Expression getLeft() {
+    public ComarsionOperator getLeft() {
         return left;
     }
 
-    public void setLeft(Expression left) {
+    public void setLeft(ComarsionOperator left) {
         this.left = left;
     }
 
-    public Expression getRight() {
+    public ComarsionOperator getRight() {
         return right;
     }
 
-    public void setRight(Expression right) {
+    public void setRight(ComarsionOperator right) {
         this.right = right;
     }
 
-    public boolean isResult() {
-        return result;
+    public boolean isNode_value() {
+        return node_value;
     }
 
-    public void setResult(boolean result) {
-        this.result = result;
+    public void setNode_value(boolean node_value) {
+        this.node_value = node_value;
     }
-
 }

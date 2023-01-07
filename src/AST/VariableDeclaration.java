@@ -1,6 +1,6 @@
 package AST;
 
-import java.util.List;
+import AST.DataType.TypeVariable;
 
 public class VariableDeclaration {
 

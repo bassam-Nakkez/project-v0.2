@@ -1,10 +1,10 @@
 
 package AST.Operators;
-import AST.Expression;
+import AST.Expression.Expression;
 
 public class GreaterEqual extends ComarsionOperator {
 
-    GreaterEqual(Expression left , Expression right , boolean result)
+    GreaterEqual(ComarsionOperator left , ComarsionOperator right , boolean result)
     {
 
         this.left = left;
@@ -13,7 +13,9 @@ public class GreaterEqual extends ComarsionOperator {
 
     }
 
+    public String toString() {
+        return " LessEqual{" + left.toString()+ " >= " + right.toString() + '}';
+    }
 
-    
 }
 

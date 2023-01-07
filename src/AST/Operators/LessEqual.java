@@ -1,6 +1,6 @@
 package AST.Operators;
 
-import AST.Expression;
+import AST.Expression.Expression;
 
 public class LessEqual extends ComarsionOperator {
 
@@ -8,8 +8,14 @@ public class LessEqual extends ComarsionOperator {
     {
 
         this.left = left;
-        this.right =right;
-        this.result =result;
+        this.right = right;
+        this.result = result;
 
+    }
+
+
+    @Override
+    public String toString() {
+        return " LessEqual{" + left.toString()+ " <= " + right.toString() + '}';
     }
 }

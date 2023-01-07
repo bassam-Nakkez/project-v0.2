@@ -10,6 +10,8 @@ public abstract class LogicalOperator extends  Operator {
     String operator;
 
 
+
+
     public LogicalOperator getLeft() {
         return left;
     }
@@ -65,35 +67,35 @@ public abstract class LogicalOperator extends  Operator {
         if (this.left != null) {
 
             if (this.right != null) {
-                return "(" + this.left + " " + this.operator + " " + this.right + ")";
-            } else if (this.comp != null) {
-                return "(" + this.left + " " + this.operator + " " + this.comp + ")";
+                return "(" + this.left.toString() + " " + this.operator+ " " + this.right.toString() + ")";
+            } else if (this.comp.toString() != null) {
+                return "(" + this.left.toString() + " " + this.operator + " " + this.comp.toString() + ")";
             } else if (this.ID != null) {
-                return "(" + this.left + " " + this.operator + " " + this.ID + ")";
+                return "(" + this.left.toString() + " " + this.operator + " " + this.ID.toString() + ")";
             } else {
-                return "(" + this.left + " " + this.operator + " " + this.boolValue + ")";
+                return "(" + this.left.toString() + " " + this.operator + " " + this.boolValue.toString() + ")";
             }
 
 
         } else if (this.right != null) {
 
                 if (this.comp != null) {
-                    return "(" + this.comp + " " + this.operator + " " + this.right + ")";
+                    return "(" + this.comp.toString() + " " + this.operator + " " + this.right.toString() + ")";
                 } else if (this.ID != null) {
-                    return "(" + this.ID + " " + this.operator + " " + this.right + ")";
+                    return "(" + this.ID + " " + this.operator + " " + this.right.toString() + ")";
                 } else {
-                    return "(" + this.boolValue + " " + this.operator + " " + this.right + ")";
+                    return "(" + this.boolValue.toString() + " " + this.operator + " " + this.right.toString() + ")";
                 }
         }
         else if(this.comp != null )
         {
-            return "(" + this.comp + ")";
+            return "(" + this.comp.toString() + ")";
 
         }
         else if (ID !=null)
         {
             return  this.ID;
         }
-        else return ""+boolValue;
+        else return boolValue.toString();
     }
 }

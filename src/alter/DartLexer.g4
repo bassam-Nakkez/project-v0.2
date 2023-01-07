@@ -58,7 +58,7 @@ BE: '|=';
 CB: ']';
 CO: ':';
 COM: ',';
-
+ARROW:'=>';
 
 fragment
 LETTER
