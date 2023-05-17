@@ -91,44 +91,42 @@
 TextFiled (width:20,decoration:InputDecoration(labelText:"hazem"),controller:x);
 
 
-
-Scaffold(
-body: Row( children:
-
-
-
-              Container(
-              width:200,
-              height:200,
-              color:Colors.blue),
-              Column(  children:
-                            Container(
-                            width:100,
-                            height:100,
-                            color:Colors.blue),
-                            Text(text2, style: TextStyle(fontSize: 40, color: Colors.red)),
-                           Container(
-                           width:100,
-                           height:100,
-                           color:Colors.red),
-                            Text(text3, style: TextStyle(fontSize: 20, color: Colors.red)),
-                        ),
-             Container(
-             width:100,
-             height:100,
-             color:Colors.red),
-                           Image(image:AssetImage('assets\\image\\a1.jpg') , width:200 , height:200),
-                           SizedBox(height:20),
-              Text('Details :', style: TextStyle(fontSize: 20, color: Colors.blue)
-              )
-               )
-               floatingActionButton:FloatingActionButton(onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder:(context)=>test3(i:"hazem")));
-               if( i < 5) { }
-
-
-               } ),
-                );
+//
+// Scaffold(
+// body: Row( children:
+//
+//
+//
+//               Container(
+//               width:200,
+//               height:200,
+//               color:Colors.blue),
+//               Column(  children:
+//                             Container(
+//                             width:100,
+//                             height:100,
+//                             color:Colors.blue),
+//                             Text(text2, style: TextStyle(fontSize: 40, color: Colors.red)),
+//                            Container(
+//                            width:100,
+//                            height:100,
+//                            color:Colors.red),
+//                             Text(text3, style: TextStyle(fontSize: 20, color: Colors.red)),
+//                         ),
+//              Container(
+//              width:100,
+//              height:100,
+//              color:Colors.red),
+//                            Image(image:AssetImage('assets\\image\\a1.jpg') , width:200 , height:200),
+//                            SizedBox(height:20),
+//               Text('Details :', style: TextStyle(fontSize: 20, color: Colors.blue)
+//               )
+//                )
+//                floatingActionButton:FloatingActionButton(onPressed: (){
+//                 Navigator.of(context).push(MaterialPageRoute(builder:(context)=>test3(i:"hazem")));
+//                if( i < 5) { }
+//                } ),
+//                 );
 
 
 
@@ -173,3 +171,14 @@ body: Row( children:
 //
 // int y = 5;
 // int x = y + 4;
+
+
+ListView(
+  itemCount: 10,
+  itemBuilder: (BuildContext context, int index) {
+   return  Container(
+              width:200,
+              height:200,
+              color:Colors.blue);
+   }
+   );

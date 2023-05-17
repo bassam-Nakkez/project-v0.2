@@ -128,6 +128,27 @@ FileImage:'FileImage(';
 File:'File';
 
 
+
+//// ListView widget
+
+ ListView:'ListView';
+ ItemBuilder : 'itemBuilder:';
+ ItemCount: 'itemCount:';
+ Physics : 'physics:';
+ ShrinkWrap : 'shrinkWrap:';
+ AddAutomaticKeepAlives : 'addAutomaticKeepAlives:';
+ AddRepaintBoundaries : 'addRepaintBoundaries:';
+ AddSemanticIndexes : 'addSemanticIndexes:';
+ BuildContext:'BuildContext';
+ AlwaysScrollableScrollPhysics: 'AlwaysScrollableScrollPhysics';
+ BouncingScrollPhysics : 'BouncingScrollPhysics';
+ ClampingScrollPhysics: 'ClampingScrollPhysics';
+ NeverScrollableScrollPhysics: 'NeverScrollableScrollPhysics';
+ Context:'context';
+ Index :'index';
+
+
+
 CP: ')';
 DOT: '.';
 E: '=';
