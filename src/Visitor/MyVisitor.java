@@ -1858,6 +1858,73 @@ public class MyVisitor extends DartParserBaseVisitor {
         Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<a href=\""+link.name+".php\" class=\"floating-button\">+</a>");
         return super.visitNavigator(ctx);
     }
+
+
+
+
+    @Override
+    public Widget visitListView(DartParser.ListViewContext ctx) {
+
+        ListView listView = new ListView();
+
+        if ( ctx.listViewArguments() != null )
+        {
+            for (int i = 0 ; i< ctx.listViewArguments().size() ; i++)
+            {
+                 visitListViewArguments(ctx.listViewArguments().get(i) , listView);
+            }
+        }
+
+        return listView;
+    }
+
+
+    @Override
+    public Widget visitListViewArguments(DartParser.ListViewArgumentsContext ctx , ListView listView) {
+
+
+        if (ctx.itemCount() != null &&  ctx.itemBuilder() != null)
+        {
+          visitItemCount(ctx.itemCount() , listView);
+          visitItemBuilder(ctx.itemBuilder() , listView);
+        }
+        return null;
+    }
+
+
+    @Override
+    public Object visitItemBuilder(DartParser.ItemBuilderContext ctx ,  ListView listView) {
+
+        if (ctx.listOfWidget() != null)
+        {
+            Helper.files.get(Helper.currentHtmlName).addToHtmlFile(" <ul> ");
+
+            for (int i=0 ; i < listView.getItemCount() ; i++  )
+            {
+                Helper.files.get(Helper.currentHtmlName).addToHtmlFile("  <li> ");
+                visitListOfWidget(ctx.listOfWidget());
+                Helper.files.get(Helper.currentHtmlName).addToHtmlFile("  <li>\n");
+
+            }
+            Helper.files.get(Helper.currentHtmlName).addToHtmlFile(" </ul> ");
+
+
+        }
+
+        return null;
+    }
+
+    @Override
+    public Widget visitItemCount (  DartParser.ItemCountContext ctx , ListView listView)
+    {
+
+        if (ctx.INT_NUM() != null) {
+
+            listView.setItemCount(Integer.parseInt(ctx.INT_NUM().getText()));
+        }
+
+        return null;
+    }
 }
 
 

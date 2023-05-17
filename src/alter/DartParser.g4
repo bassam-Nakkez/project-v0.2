@@ -28,7 +28,8 @@ stat
  |loops
  |switch_stat
  |imports* SCO
- | widget
+ |widget
+ |navigator
  ;
 
 
@@ -330,7 +331,8 @@ identi
           | scaffold COM?
           | materialApp
           | textFiled COM?
-        ;
+          | listView COM?
+          ;
 
 
 
@@ -501,3 +503,29 @@ image_provider :ImageProp ( assetImage | networkImage | fileImage ) COM?;
 assetImage : AssetImage STRING_singl CP;
 networkImage : NetworkImage STRING_singl CP ;
 fileImage : FileImage File OP STRING_singl CP ;
+
+
+///-------------- ListView widget -------------------
+
+listView : ListView OP listViewArguments* CP;
+
+listViewArguments: Children OB listOfWidget CB
+                        | ItemBuilder itemBuilder COM?
+                        | itemCount
+                        | Physics scrollPhysics COM?
+                        | padding COM?
+                        | ShrinkWrap (TRUE | FALSE) COM?
+                        | AddAutomaticKeepAlives (TRUE | FALSE) COM?
+                        | AddRepaintBoundaries (TRUE | FALSE) COM?
+                        | AddSemanticIndexes (TRUE | FALSE) COM?
+                        ;
+itemCount: ItemCount  INT_NUM COM?;
+
+itemBuilder : OP BuildContext Context COM INT_TYPE Index CP ARROW listOfWidget
+            | OP BuildContext Context COM INT_TYPE Index CP START (RETURN listOfWidget SCO)? END ;
+
+scrollPhysics :     AlwaysScrollableScrollPhysics
+                    | BouncingScrollPhysics
+                    | ClampingScrollPhysics
+                    | NeverScrollableScrollPhysics
+                    ;
