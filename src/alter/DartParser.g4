@@ -29,6 +29,7 @@ stat
  |switch_stat
  |imports* SCO
  | widget
+ | navigator
  ;
 
 
@@ -192,17 +193,18 @@ cond: call Q call (CO call)?;
 objectClass : CONST? NEW? ID OP (objectParameters |STRING_singl (COM objectParameters)?) CP;
 
 objectParameter :ID CO NEW? (
-                LT ID GT OB objectClass CB
-                |ID? Q? objectClass
-                |LT ID GT OB objectClass CB
-                |data
-                |call
-                |anonArray COM?
-                |arrowAndAnonFun
-                |OB NEW? call (COM call )* CB
-                |cond
-                | FALSE
-                |TRUE )
+//                LT ID GT OB objectClass CB
+//                |ID? Q? objectClass
+//                |LT ID GT OB objectClass CB
+                  data
+//                |call
+//                |anonArray COM?
+//                |arrowAndAnonFun
+//                |OB NEW? call (COM call )* CB
+//                |cond
+//                | FALSE
+//                |TRUE
+                )
                 ;
 
 objectParameters : objectParameter ( COM objectParameter)* COM?;

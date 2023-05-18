@@ -89,6 +89,11 @@ public class MyVisitor extends DartParserBaseVisitor {
             {
                 return visitWidget(ctx.widget());
             }
+
+            if(ctx.navigator()!=null)
+            {
+                return  visitNavigator(ctx.navigator());
+            }
         return null;
 
     }
@@ -819,13 +824,16 @@ public class MyVisitor extends DartParserBaseVisitor {
     @Override
     public ObjectClass visitObjectClass(DartParser.ObjectClassContext ctx) {
         ObjectClass objectClass = new ObjectClass();
+
+        objectClass.name=ctx.ID().toString();
+
         if(ctx.objectParameters() != null) {
             objectClass.setObjectParameters(visitObjectParameters(ctx.objectParameters()));
         }
-        if(ctx.STRING_singl() != null) {
-         return  null;  // objectClass.setStringType(ctx.STRING_singl().getText());
-        }
-        return null;
+//        if(ctx.STRING_singl() != null) {
+//         return  null;  // objectClass.setStringType(ctx.STRING_singl().getText());
+//        }
+        return objectClass;
     }
 
     @Override
@@ -842,23 +850,23 @@ public class MyVisitor extends DartParserBaseVisitor {
     @Override
     public ObjectParameter visitObjectParameter(DartParser.ObjectParameterContext ctx) {
         ObjectParameter objectParameter = new ObjectParameter();
-        if(ctx.ID(0) != null) {
-            objectParameter.setObjectName(ctx.ID(0).getText());
-        }
-        if(ctx.objectClass() != null) {
-            objectParameter.setObjectClass(visitObjectClass( ctx.objectClass() ));
-        }
-        if(ctx.ID(1) != null) {
-            objectParameter.setID(ctx.ID(1).getText());
-        }
-        if(ctx.call() != null) {
-            objectParameter.setCall(visitCall(ctx.call(1)));
-        }
-        if(ctx.arrowAndAnonFun() != null) {
-//            objectParameter.setAnonymousFunction(visitArrowAndAnonFun(ctx.arrowAndAnonFun()));
-        }
+        //        if(ctx.ID(0) != null) {
+//            objectParameter.setObjectName(ctx.ID(0).getText());
+//        }
+//        if(ctx.objectClass() != null) {
+//            objectParameter.setObjectClass(visitObjectClass( ctx.objectClass() ));
+//        }
+//        if(ctx.ID(1) != null) {
+//            objectParameter.setID(ctx.ID(1).getText());
+//        }
+//        if(ctx.call() != null) {
+//            objectParameter.setCall(visitCall(ctx.call(1)));
+//        }
+//        if(ctx.arrowAndAnonFun() != null) {
+////            objectParameter.setAnonymousFunction(visitArrowAndAnonFun(ctx.arrowAndAnonFun()));
+//        }
         if(ctx.data() != null) {
-//            objectParameter.setData(visitData(ctx.data()));
+            objectParameter.setObjectName(ctx.data().getChild(0).toString());
         }
         return null;
     }
@@ -1701,7 +1709,7 @@ public class MyVisitor extends DartParserBaseVisitor {
     public String visitAssetImage(DartParser.AssetImageContext ctx) {
         if (ctx.STRING_singl() != null)
         {
-            String local="http://localhost/project-v 0.1/";
+            String local="http://localhost/project-v0.2/";
             String image=ctx.STRING_singl().getText();
             image=image.substring(1,image.length()-1);
             return '"'+local+image+'"';
@@ -1844,19 +1852,21 @@ public class MyVisitor extends DartParserBaseVisitor {
 
 
     @Override
-    public Object visitNavigator(DartParser.NavigatorContext ctx) {
+    public Statement visitNavigator(DartParser.NavigatorContext ctx) {
         ObjectClass link = visitObjectClass(ctx.objectClass());
+        Helper.navigatorClass.add(link.name);
         if(link.objectParameters!=null)
         {
+            System.out.println(link.getId()+"  dasdasdasdasd");
             Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<?php ");
             for (ObjectParameter parameter : link.objectParameters.getObjectParameters()) {
                 Helper.files.get(Helper.currentHtmlName).addToHtmlFile("\n $__SESSION["+parameter.objectName+"]=Map varible value");
             }
             Helper.files.get(Helper.currentHtmlName).addToHtmlFile("?>");
         }
-        System.out.println(link+"Sdasdasda");
         Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<a href=\""+link.name+".php\" class=\"floating-button\">+</a>");
-        return super.visitNavigator(ctx);
+//        return super.visitNavigator(ctx);
+        return link;
     }
 }
 

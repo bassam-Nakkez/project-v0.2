@@ -8,9 +8,17 @@ STRING_TYPE : 'String'|'string';
 BOOL_TYPE : 'BOOL'|'bool';
 FLOAT_TYPE : 'float'|'FLOAT';
 DOUBLE_TYPE : 'DOUBLE'|'double';
+LABELTEXT:'labelText:';
+INPUTDECORATION:'InputDecoration';
+DECORATION : 'decoration:';
+CONTROLLER:'controller:';
 
-
-
+BUILDER : 'builder';
+MATERIALPAGEROUTE : 'MaterialPageRoute';
+PUSH : 'push';
+CONTEXT : 'context';
+NAVIGATOR : 'Navigator';
+TextFiled :'TextFiled';
 Container : 'Container(';
 Child: 'child:';
 Width : 'width:';

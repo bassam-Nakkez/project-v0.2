@@ -36,6 +36,14 @@ public class Main {
         }
 
 
+        for (String className:Helper.navigatorClass) {
+            if(!Helper.files.containsKey(className)){
+                System.out.println("you have error in navigator class name");
+                return ;
+            }
+        }
+
+
         if (Helper.symbolTable.getErrorMassages().isEmpty()) {
 
             try {

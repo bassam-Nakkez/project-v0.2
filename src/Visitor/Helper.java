@@ -29,7 +29,6 @@ public class Helper
 
 
 
-
     public static void SymbolTable_Add(List<String> scopes ,  HashMap<String, Details>  symbolTable , String ScopeName , String type , List<String> errorMassages , int line , String name, Details details)
     {
 

@@ -3,6 +3,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public  class FileManagement {
 
@@ -36,9 +38,9 @@ public  class FileManagement {
         }
     }
 
-    public static void openFile(String str) throws IOException {
-        java.io.File htmlFile = new java.io.File(str);
-        Desktop.getDesktop().browse(htmlFile.toURI());
+    public static void openFile(String str) throws IOException, URISyntaxException {
+        URI uri=new URI("http://localhost/"+str);
+        Desktop.getDesktop().browse(uri);
     }
 
 
