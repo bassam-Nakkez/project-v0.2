@@ -1,5 +1,6 @@
 // Generated from java-escape by ANTLR 4.11.1
 package alter;
+import AST.Widget.ListView;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -11,7 +12,7 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  * operations with no return type.
  */
 @SuppressWarnings("CheckReturnValue")
-public class DartParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements DartParserVisitor<T> {
+public abstract class DartParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements DartParserVisitor<T> {
 	/**
 	 * {@inheritDoc}
 	 *
@@ -1104,4 +1105,10 @@ public class DartParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitScrollPhysics(DartParser.ScrollPhysicsContext ctx) { return visitChildren(ctx); }
+
+	public abstract Object visitListViewArguments(DartParser.ListViewArgumentsContext ctx, ListView listView);
+
+	public abstract Object visitItemBuilder(DartParser.ItemBuilderContext ctx, ListView listView);
+
+	public abstract Object visitItemCount(DartParser.ItemCountContext ctx, ListView listView);
 }

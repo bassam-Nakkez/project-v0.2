@@ -1,3 +1,6 @@
+import 'Files/test3.dart';
+
+
 // // Container(
 // // width:100,
 // // height:100,
@@ -88,15 +91,12 @@
 //
 //
 //
-TextFiled (width:20,decoration:InputDecoration(labelText:"hazem"),controller:x);
+// TextFiled (width:20,decoration:InputDecoration(labelText:"hazem"),controller:x);
 
 
 //
 // Scaffold(
 // body: Row( children:
-//
-//
-//
 //               Container(
 //               width:200,
 //               height:200,
@@ -123,12 +123,8 @@ TextFiled (width:20,decoration:InputDecoration(labelText:"hazem"),controller:x);
 //               )
 //                )
 //                floatingActionButton:FloatingActionButton(onPressed: (){
-//                 Navigator.of(context).push(MaterialPageRoute(builder:(context)=>test3(i:"hazem")));
-//                if( i < 5) { }
-//                } ),
-//                 );
-
-
+//                 Navigator.of(context).push(MaterialPageRoute(builder:(context)=>test3(i:"hazem")));}));
+//
 
 // ////// ( Test Semantic Error )//////
 
@@ -172,10 +168,10 @@ TextFiled (width:20,decoration:InputDecoration(labelText:"hazem"),controller:x);
 // int y = 5;
 // int x = y + 4;
 
-
+//
 ListView(
   itemCount: 10,
-  itemBuilder: (BuildContext context, int index) {
+  itemBuilder: (BuildContext Context, int index) {
    return  Container(
               width:200,
               height:200,

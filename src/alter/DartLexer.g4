@@ -9,7 +9,12 @@ BOOL_TYPE : 'BOOL'|'bool';
 FLOAT_TYPE : 'float'|'FLOAT';
 DOUBLE_TYPE : 'DOUBLE'|'double';
 
-
+BUILDER : 'builder';
+MATERIALPAGEROUTE : 'MaterialPageRoute';
+PUSH : 'push';
+CONTEXT : 'context';
+NAVIGATOR : 'Navigator';
+TextFiled :'TextFiled';
 
 Container : 'Container(';
 Child: 'child:';
@@ -144,9 +149,8 @@ File:'File';
  BouncingScrollPhysics : 'BouncingScrollPhysics';
  ClampingScrollPhysics: 'ClampingScrollPhysics';
  NeverScrollableScrollPhysics: 'NeverScrollableScrollPhysics';
- Context:'context';
+ Context:'Context';
  Index :'index';
-
 
 
 CP: ')';

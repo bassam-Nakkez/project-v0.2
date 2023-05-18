@@ -20,6 +20,7 @@ import alter.DartParserBaseVisitor;
 import org.antlr.v4.runtime.Token;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,9 +97,20 @@ public class MyVisitor extends DartParserBaseVisitor {
     @Override
     public String visitImports(DartParser.ImportsContext ctx) {
 
-        String string = ctx.STRING_singl().getText();
+        if (ctx.STRING_singl() != null) {
+            String path = ctx.STRING_singl().getText();
+            path = path.substring( 1 , path.length()-1);
+            try {
+                Helper.currentHtmlName = path;
+                Helper.generation(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Helper.currentHtmlName = "Files/main.dart";
+            return  path;
+        }
 
-        return  string;
+        return  null;
     }
 
 
@@ -1168,28 +1180,19 @@ public class MyVisitor extends DartParserBaseVisitor {
     public Widget visitWidget(DartParser.WidgetContext ctx) {
 
         Widget widget = new Widget();
-        String htmlCode =" <html> \n <head>\n" +
-                "                    <meta charset=\"UTF-8\">\n" +
-                "                    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
-                "                    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "                    <link rel=\"stylesheet\" href=\"style.css\">\n" +
-                "                    <title> bbbbbbbbbb </title>\n" +
-                "                </head>\n" +
-                "                <body>";
 
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile(htmlCode);
+
         if (ctx.listOfWidget()!= null)
         {
             widget =  visitListOfWidget(ctx.listOfWidget());
         }
-        htmlCode = "\n</body>\n" +
-                " </html>";
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile(htmlCode);
+         FileManagement.addToHtmlFile(Helper.currentHtmlName ,  "\n</body>\n" +
+                 " </html>");
 
-
-
-        FileManagement.writeToTheFile("../style.css" ,FileManagement.CssCode );
-        FileManagement.writeToTheFile("../"+Helper.currentHtmlName+".php" ,Helper.files.get(Helper.currentHtmlName).htmlCode);
+        FileManagement.writeToTheFile("style.css" ,FileManagement.CssCode );
+        int count = FileManagement.htmlFiles.size();
+      //  FileManagement.CreateFile("../screen-"+count+".php");
+        FileManagement.writeToTheFile("screen-"+count+".php" , FileManagement.htmlFiles.get(Helper.currentHtmlName));
 
         return widget;
     }
@@ -1217,16 +1220,16 @@ public class MyVisitor extends DartParserBaseVisitor {
         }
         if (ctx.row()!=null)
         {
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<table>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "<table>");
             widget =  visitRow(ctx.row());
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</table>");        }
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "</table>");        }
         if (ctx.column() != null) {
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<table>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "<table>");
             widget = visitColumn(ctx.column());
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</table>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "</table>");
         }
 
         if (ctx.sizedBox() != null) {
@@ -1247,6 +1250,9 @@ public class MyVisitor extends DartParserBaseVisitor {
             visitTextFiled(ctx.textFiled());
         }
 
+        if (ctx.listView() != null) {
+            visitListView(ctx.listView());
+        }
         return widget;
     }
 
@@ -1283,13 +1289,13 @@ public class MyVisitor extends DartParserBaseVisitor {
         FileManagement.addToCssFile(cssCode);
 
         String code = "<div class ='"+container.widgetName+"' >";
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile(code);
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , code);
         if(ctx.child() != null)
         {
             container.setChild(visitChild(ctx.child()));
         }
 
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</div>");
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , "</div>");
 
         Helper.widgets.put(container.widgetName , container);
         return container;
@@ -1373,15 +1379,15 @@ public class MyVisitor extends DartParserBaseVisitor {
         }
 
 
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile("\n<span class=\""+text.getWidgetName()+"\">");
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , "\n<span class=\""+text.getWidgetName()+"\">");
 
         if (ctx.text_data() != null)
         {
             text.setData(visitText_data(ctx.text_data()));
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile(text.getData());
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , text.getData());
         }
 
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<span/>");
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , "</span>");
         return text;
     }
 
@@ -1448,9 +1454,9 @@ public class MyVisitor extends DartParserBaseVisitor {
         Center center = new Center();
         if (ctx.child()!= null)
         {
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("\n<center>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "\n<center>");
             center.setChild(visitChild(ctx.child()));
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</center>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "</center>");
 
         }
         return center;
@@ -1500,14 +1506,14 @@ public class MyVisitor extends DartParserBaseVisitor {
 
         for (int i=0 ; i < ctx.listOfWidget().size() ; i++ )
         {
-            //Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<div class=\"column\">\n");
+            // FileManagement.addToHtmlFile(Helper.currentHtmlName , "<div class=\"column\">\n");
 
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<tr>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "<tr>");
 
             column.getChildren().add(visitListOfWidget(ctx.listOfWidget().get(i)));
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</tr>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "</tr>");
         }
 
 
@@ -1552,19 +1558,19 @@ public class MyVisitor extends DartParserBaseVisitor {
     public Widget visitChildrenOfRow(DartParser.ChildrenOfRowContext ctx) {
 
         Row row = new Row();
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<tr>");
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , "<tr>");
 
         for (int i=0 ; i < ctx.listOfWidget().size() ; i++ )
         {
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<th>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "<th>");
 
 
             row.getChildren().add( visitListOfWidget(ctx.listOfWidget().get(i)));
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</th>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "</th>");
 
         }
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</tr>");
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , "</tr>");
 
         return row;
     }
@@ -1582,16 +1588,16 @@ public class MyVisitor extends DartParserBaseVisitor {
         if (ctx.size() != null) {
             sizedBox = (SizedBox) visitSize(ctx.size());
             String code = "<div class =\""+sizedBox.getWidgetName()+ "\">";
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile(code);
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , code);
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "");
 
             if (ctx.child() != null) {
 
                 sizedBox.setChild( visitChild(ctx.child()));
             }
 
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</div>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "</div>");
         }
 
 
@@ -1683,7 +1689,7 @@ public class MyVisitor extends DartParserBaseVisitor {
         }
 
         htmlCode +=">";
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile(htmlCode);
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , htmlCode);
         return image;
     }
 
@@ -1721,7 +1727,7 @@ public class MyVisitor extends DartParserBaseVisitor {
 
         Scaffold scaffold = new Scaffold();
 //        FileManagement.addToCssFile(".scaffold {");
-//        Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<div class=\"scaffold\">");
+//         FileManagement.addToHtmlFile(Helper.currentHtmlName , "<div class=\"scaffold\">");
 
         if (ctx.floatingActionButton()!= null) {
 
@@ -1737,7 +1743,7 @@ public class MyVisitor extends DartParserBaseVisitor {
         }
 
 
-        // Helper.files.get(Helper.currentHtmlName).addToHtmlFile("</div>");
+        //  FileManagement.addToHtmlFile(Helper.currentHtmlName , "</div>");
         return scaffold;
     }
 
@@ -1765,10 +1771,11 @@ public class MyVisitor extends DartParserBaseVisitor {
 
         FloatingActionButton button = new FloatingActionButton();
 
-
+        String link = "#" ;
         if (ctx.onPressed() != null) {
             visitOnPressed(ctx.onPressed());
         }
+        FileManagement.addToHtmlFile( Helper.currentHtmlName , " <a href="+link+" class=\"floating-button\">+</a>  ");
 
         String cssCode = ".floating-button {\n" +
                 "  position: fixed;\n" +
@@ -1801,6 +1808,15 @@ public class MyVisitor extends DartParserBaseVisitor {
         return button;
     }
 
+    @Override
+    public Object visitOnPressed(DartParser.OnPressedContext ctx) {
+
+        if (ctx.block() != null) {
+            visitBlock(ctx.block());
+        }
+
+        return null;
+    }
 
     // TextFiled
 
@@ -1826,7 +1842,7 @@ public class MyVisitor extends DartParserBaseVisitor {
             }
             cssCode+="}";
         }
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile(tf.buildCode());
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , tf.buildCode());
         FileManagement.addToCssFile(cssCode);
 
         return null;
@@ -1848,65 +1864,95 @@ public class MyVisitor extends DartParserBaseVisitor {
         ObjectClass link = visitObjectClass(ctx.objectClass());
         if(link.objectParameters!=null)
         {
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<?php ");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "<?php ");
             for (ObjectParameter parameter : link.objectParameters.getObjectParameters()) {
-                Helper.files.get(Helper.currentHtmlName).addToHtmlFile("\n $__SESSION["+parameter.objectName+"]=Map varible value");
+                 FileManagement.addToHtmlFile(Helper.currentHtmlName , "\n $__SESSION["+parameter.objectName+"]=Map varible value");
             }
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile("?>");
+             FileManagement.addToHtmlFile(Helper.currentHtmlName , "?>");
         }
         System.out.println(link+"Sdasdasda");
-        Helper.files.get(Helper.currentHtmlName).addToHtmlFile("<a href=\""+link.name+".php\" class=\"floating-button\">+</a>");
+         FileManagement.addToHtmlFile(Helper.currentHtmlName , "<a href=\""+link.name+".php\" class=\"floating-button\">+</a>");
         return super.visitNavigator(ctx);
     }
 
 
-
-
     @Override
-    public Widget visitListView(DartParser.ListViewContext ctx) {
-
+    public Object visitListView(DartParser.ListViewContext ctx) {
         ListView listView = new ListView();
+        listView.setItemCount(0);
+
+        FileManagement.addToCssFile("ul {\n" +
+                "  list-style-type: none;\n" +
+                "  padding: 0;\n" +
+                "  margin: 0;\n" +
+                "}\n" +
+                "\n" +
+                "li {\n" +
+                "  padding: 12px;\n" +
+                "  border-bottom: 1px solid #ccc;\n" +
+                "}\n" +
+                "\n" +
+                "li:last-child {\n" +
+                "  border-bottom: none;\n" +
+                "}");
 
         if ( ctx.listViewArguments() != null )
         {
             for (int i = 0 ; i< ctx.listViewArguments().size() ; i++)
             {
-                 visitListViewArguments(ctx.listViewArguments().get(i) , listView);
+                visitListViewArguments(ctx.listViewArguments().get(i) , listView);
             }
         }
 
         return listView;
     }
 
-
     @Override
-    public Widget visitListViewArguments(DartParser.ListViewArgumentsContext ctx , ListView listView) {
+    public Object visitListViewArguments(DartParser.ListViewArgumentsContext ctx , ListView listView)  {
 
-
-        if (ctx.itemCount() != null &&  ctx.itemBuilder() != null)
+        if (ctx.itemCount() != null)
         {
-          visitItemCount(ctx.itemCount() , listView);
-          visitItemBuilder(ctx.itemBuilder() , listView);
+            visitItemCount(ctx.itemCount() , listView);
+        }
+        if (ctx.ItemBuilder() != null) {
+            visitItemBuilder(ctx.itemBuilder() , listView);
+        }
+        if (ctx.padding() != null) {
+
+        }
+
+        if (ctx.AddAutomaticKeepAlives() != null) {
+
+        }
+        if (ctx.AddSemanticIndexes() != null) {
+
+        }
+
+        if (ctx.AddRepaintBoundaries() != null) {
+
+        }
+
+        if (ctx.scrollPhysics() != null) {
+
         }
         return null;
     }
 
 
     @Override
-    public Object visitItemBuilder(DartParser.ItemBuilderContext ctx ,  ListView listView) {
-
+    public Object visitItemBuilder(DartParser.ItemBuilderContext ctx ,ListView listView) {
         if (ctx.listOfWidget() != null)
         {
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile(" <ul> ");
+            FileManagement.addToHtmlFile(Helper.currentHtmlName , " <ul> ");
 
             for (int i=0 ; i < listView.getItemCount() ; i++  )
             {
-                Helper.files.get(Helper.currentHtmlName).addToHtmlFile("  <li> ");
+                FileManagement.addToHtmlFile(Helper.currentHtmlName , "  <li> ");
                 visitListOfWidget(ctx.listOfWidget());
-                Helper.files.get(Helper.currentHtmlName).addToHtmlFile("  <li>\n");
+                FileManagement.addToHtmlFile(Helper.currentHtmlName , "  </li>");
 
             }
-            Helper.files.get(Helper.currentHtmlName).addToHtmlFile(" </ul> ");
+            FileManagement.addToHtmlFile(Helper.currentHtmlName , " </ul> ");
 
 
         }
@@ -1914,13 +1960,12 @@ public class MyVisitor extends DartParserBaseVisitor {
         return null;
     }
 
-    @Override
-    public Widget visitItemCount (  DartParser.ItemCountContext ctx , ListView listView)
-    {
 
+    @Override
+    public Object visitItemCount(DartParser.ItemCountContext ctx ,ListView listView) {
         if (ctx.INT_NUM() != null) {
 
-            listView.setItemCount(Integer.parseInt(ctx.INT_NUM().getText()));
+             listView.setItemCount(Integer.parseInt(ctx.INT_NUM().getText()));
         }
 
         return null;

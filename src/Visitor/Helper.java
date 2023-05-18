@@ -1,14 +1,23 @@
 package Visitor;
 
+import AST.Parse;
 import AST.Widget.Widget;
 import SymbolTableSructure.Details;
 import SymbolTableSructure.Scope;
 import SymbolTableSructure.SymbolTable;
+import alter.DartLexer;
+import alter.DartParser;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.antlr.v4.runtime.CharStreams.fromFileName;
 
 public class Helper
 {
@@ -23,10 +32,21 @@ public class Helper
 
     public  static Set<String> widgetClass = new HashSet<>();
 
-    public static  HashMap<String,FileManagement>files = new HashMap<>();
+    public static  HashMap < String , FileManagement > files = new HashMap<>();
 
-    public static String currentHtmlName="";
+    public static String currentHtmlName="Files\\main.dart";
 
+    public static void generation(String filePath) throws IOException {
+
+        CharStream charStream = fromFileName(filePath);
+        DartLexer lex = new DartLexer(charStream);
+        CommonTokenStream tokens = new CommonTokenStream(lex);
+        DartParser parser = new DartParser(tokens);
+        ParseTree ast = parser.parse();
+        MyVisitor myVisitor = new MyVisitor();
+        Parse in = (Parse) myVisitor.visit(ast);
+
+    }
 
 
 
