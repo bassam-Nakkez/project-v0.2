@@ -1,0 +1,57 @@
+
+
+#TextFiled0{
+ width:20%
+}.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: white;
+  font-size: 27px;
+  padding: 16px 20px;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  text-decoration:none;
+  background-color: rgba(0,155,255);
+}
+
+.Container0{
+background:blue;
+ width:200px;
+ height:200px;
+}
+.Container1{
+background:blue;
+ width:100px;
+ height:100px;
+}
+.Text0{
+
+color:red;
+font-size:40;
+}
+.Container2{
+background:red;
+ width:100px;
+ height:100px;
+}
+.Text1{
+
+color:red;
+font-size:20;
+}
+.Container3{
+background:red;
+ width:100px;
+ height:100px;
+}
+.SizedBox0{height:20px;
+background: rgba(0, 0, 0 ,0);}
+ 
+.Text2{
+
+color:blue;
+font-size:20;
+}
