@@ -6,7 +6,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/alter/DartParser.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="C:\xampp\htdocs\projectC\src" />
+          <option name="outputDir" value="C:\xampp\htdocs\gitHub\project-v0.2\src" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />

@@ -421,7 +421,7 @@ textFiled: TextFiled OP  attribute+ CP;
 
 //----------------- Navigator Widget and its parameters -------------
 navigator : NAVIGATOR DOT OF OP CONTEXT CP DOT PUSH OP MATERIALPAGEROUTE OP BUILDER CO OP CONTEXT CP ARROW objectClass CP CP SCO;
-
+//objectNavigator:  ;
 
 
 //----------------- SizeBox Widget and its parameters -------------
@@ -510,8 +510,8 @@ fileImage : FileImage File OP STRING_singl CP ;
 listView : ListView OP listViewArguments* CP;
 
 listViewArguments: Children OB listOfWidget CB
-                        | ItemBuilder itemBuilder COM?
                         | itemCount
+                        | ItemBuilder itemBuilder COM?
                         | Physics scrollPhysics COM?
                         | padding COM?
                         | ShrinkWrap (TRUE | FALSE) COM?
@@ -519,7 +519,7 @@ listViewArguments: Children OB listOfWidget CB
                         | AddRepaintBoundaries (TRUE | FALSE) COM?
                         | AddSemanticIndexes (TRUE | FALSE) COM?
                         ;
-itemCount: ItemCount  INT_NUM COM?;
+itemCount: ItemCount INT_NUM COM?;
 
 itemBuilder : OP BuildContext Context COM INT_TYPE Index CP ARROW listOfWidget
             | OP BuildContext Context COM INT_TYPE Index CP START (RETURN listOfWidget SCO)? END ;
