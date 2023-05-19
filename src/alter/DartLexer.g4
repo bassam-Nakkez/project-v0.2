@@ -201,6 +201,11 @@ CB: ']';
 CO: ':';
 COM: ',';
 ARROW:'=>';
+Sh:'#'HEXDIGIT;
+
+//AppBar Widget
+Actions:'actions';
+BackgroundColor:'backgroundColor';
 
 fragment
 LETTER
@@ -503,7 +508,7 @@ DOUBLE_NUM: '-'?[0-9]+ '.' [0-9]*
             | '.' [0-9]+
             ;
 
-HEXDIGIT : [0-9A-Fa-f];
+HEXDIGIT : [0-9A-Fa-f]+;
 BOOLE_TYPE : TRUE | FALSE ;
 STRING
  : '"' (~["\r\n] | '""')* '"'

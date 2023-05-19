@@ -680,42 +680,6 @@ public interface DartParserListener extends ParseTreeListener {
 	 */
 	void exitDecVar(DartParser.DecVarContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code intNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 */
-	void enterIntNumber(DartParser.IntNumberContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code intNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 */
-	void exitIntNumber(DartParser.IntNumberContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code floatNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 */
-	void enterFloatNumber(DartParser.FloatNumberContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code floatNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 */
-	void exitFloatNumber(DartParser.FloatNumberContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code doubleNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 */
-	void enterDoubleNumber(DartParser.DoubleNumberContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code doubleNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 */
-	void exitDoubleNumber(DartParser.DoubleNumberContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link DartParser#this}.
 	 * @param ctx the parse tree
 	 */
@@ -745,6 +709,36 @@ public interface DartParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitData(DartParser.DataContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DartParser#intNumber}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntNumber(DartParser.IntNumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DartParser#intNumber}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntNumber(DartParser.IntNumberContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DartParser#floatNumber}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloatNumber(DartParser.FloatNumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DartParser#floatNumber}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloatNumber(DartParser.FloatNumberContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DartParser#doubleNumber}.
+	 * @param ctx the parse tree
+	 */
+	void enterDoubleNumber(DartParser.DoubleNumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DartParser#doubleNumber}.
+	 * @param ctx the parse tree
+	 */
+	void exitDoubleNumber(DartParser.DoubleNumberContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DartParser#comparsion}.
 	 * @param ctx the parse tree
@@ -1035,6 +1029,16 @@ public interface DartParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitColorHSV(DartParser.ColorHSVContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DartParser#colors}.
+	 * @param ctx the parse tree
+	 */
+	void enterColors(DartParser.ColorsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DartParser#colors}.
+	 * @param ctx the parse tree
+	 */
+	void exitColors(DartParser.ColorsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DartParser#text}.
 	 * @param ctx the parse tree
@@ -1405,16 +1409,6 @@ public interface DartParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAppBar(DartParser.AppBarContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DartParser#title}.
-	 * @param ctx the parse tree
-	 */
-	void enterTitle(DartParser.TitleContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DartParser#title}.
-	 * @param ctx the parse tree
-	 */
-	void exitTitle(DartParser.TitleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DartParser#floatingActionButton}.
 	 * @param ctx the parse tree

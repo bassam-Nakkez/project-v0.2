@@ -1,4 +1,27 @@
 
+
+//
+//
+// Scaffold(
+// appBar: AppBar(),
+// body:ListView(
+//   itemCount: 10,
+//   itemBuilder: (BuildContext Context, int index) {
+//    return  Container(
+//               width:200,
+//               height:200,
+//               color:Colors.blue);
+//    }
+//    ),
+//  floatingActionButton:FloatingActionButton(onPressed: (){
+//                 Navigator.of(context).push(MaterialPageRoute(builder:(context)=>DetailsScreen(i:"hazem" ,productID :250  ,  userID : 15  )));
+//                 }
+//                 )
+// );
+
+
+
+
 //
 //     return Scaffold(
 //       appBar: AppBar(
@@ -19,5 +42,5 @@
 //         ),
 //       ),
 //     );
-//
+
 

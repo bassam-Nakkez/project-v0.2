@@ -10,6 +10,21 @@ public class ObjectParameters extends ObjectNode {
 
     List<ObjectParameter> objectParameters = new ArrayList<>();
 
+
+
+    public void copy( ObjectParameters obj)
+    {
+        if (this.objectParameters != null)
+        {
+            for (ObjectParameter parameter : this.objectParameters )
+            {
+                obj.getObjectParameters().add(parameter);
+            }
+
+        }
+
+    }
+
     public List<ObjectParameter> getObjectParameters() {
         return objectParameters;
     }

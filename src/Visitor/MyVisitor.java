@@ -4,6 +4,7 @@ import AST.*;
 import AST.Call.CallFunction;
 import AST.ClassAndObject.Class.*;
 import AST.ClassAndObject.Object.*;
+import AST.DataType.Data;
 import AST.Expression.*;
 import AST.Expression.Addition.Addition;
 import AST.Expression.Division.Division;
@@ -57,6 +58,9 @@ public class MyVisitor extends DartParserBaseVisitor {
         {
             return visitDeclaration(ctx.declaration());
         }
+        if (ctx.navigator() != null) {
+            visitNavigator(ctx.navigator());
+        }
 
 
 //        else if (ctx.assignment() != null)
@@ -102,11 +106,21 @@ public class MyVisitor extends DartParserBaseVisitor {
             path = path.substring( 1 , path.length()-1);
             try {
                 Helper.currentHtmlName = path;
+                String fileName = Helper.currentHtmlName;
+                fileName = fileName.substring(6 , fileName.length()-5);
+                Helper.screens.put(  fileName , path);
                 Helper.generation(path);
+
             } catch (IOException e) {
-                throw new RuntimeException(e);
+
+                Token idToken =ctx.IMPORT().getSymbol();
+                int line = idToken.getLine();
+                Helper.symbolTable.getErrorMassages().add("Error: Target '"+path+"' of import in line '" + line +"' doesn't exist. ");
+              //  throw new RuntimeException(e);
             }
             Helper.currentHtmlName = "Files/main.dart";
+
+
             return  path;
         }
 
@@ -119,9 +133,9 @@ public class MyVisitor extends DartParserBaseVisitor {
     @Override
     public Call visitCall(DartParser.CallContext ctx) {
 
-        if (ctx.objectMethod() != null) {
-            return visitObjectMethod(ctx.objectMethod());
-        }
+//        if (ctx.objectMethod() != null) {
+//           // return visitObjectMethod(ctx.objectMethod());
+//        }
         if (ctx.objectClass() != null) {
 
             return visitObjectClass(ctx.objectClass());
@@ -831,13 +845,17 @@ public class MyVisitor extends DartParserBaseVisitor {
     @Override
     public ObjectClass visitObjectClass(DartParser.ObjectClassContext ctx) {
         ObjectClass objectClass = new ObjectClass();
+        if (ctx.ID() != null) {
+            objectClass.setObjectName(ctx.ID().getText());
+
+        }
         if(ctx.objectParameters() != null) {
             objectClass.setObjectParameters(visitObjectParameters(ctx.objectParameters()));
         }
         if(ctx.STRING_singl() != null) {
          return  null;  // objectClass.setStringType(ctx.STRING_singl().getText());
         }
-        return null;
+        return objectClass;
     }
 
     @Override
@@ -848,29 +866,96 @@ public class MyVisitor extends DartParserBaseVisitor {
                 objectParameters.getObjectParameters().add(visitObjectParameter(ctx.objectParameter(i)));
             }
         }
-        return null;
+        return objectParameters;
     }
 
     @Override
     public ObjectParameter visitObjectParameter(DartParser.ObjectParameterContext ctx) {
         ObjectParameter objectParameter = new ObjectParameter();
+
         if(ctx.ID(0) != null) {
-            objectParameter.setObjectName(ctx.ID(0).getText());
+            objectParameter.setParameterName(ctx.ID(0).getText());
+
+            //objectParameter.setObjectName(ctx.ID(0).getText());
         }
         if(ctx.objectClass() != null) {
             objectParameter.setObjectClass(visitObjectClass( ctx.objectClass() ));
         }
         if(ctx.ID(1) != null) {
-            objectParameter.setID(ctx.ID(1).getText());
+            objectParameter.setObjectName(ctx.ID(1).getText());
+
+           // objectParameter.setParameterName(ctx.ID(1).getText());
         }
         if(ctx.call() != null) {
-            objectParameter.setCall(visitCall(ctx.call(1)));
+          //  objectParameter.setCall(visitCall(ctx.call(1)));
         }
         if(ctx.arrowAndAnonFun() != null) {
 //            objectParameter.setAnonymousFunction(visitArrowAndAnonFun(ctx.arrowAndAnonFun()));
         }
         if(ctx.data() != null) {
-//            objectParameter.setData(visitData(ctx.data()));
+           objectParameter.setData(visitData(ctx.data()));
+        }
+        return objectParameter;
+    }
+
+    @Override
+    public Data visitData(DartParser.DataContext ctx) {
+        Data data = new Data();
+        if (ctx.ID() != null) {
+
+            data.setValue(ctx.ID().getText());
+        }
+        if (ctx.intNumber() != null) {
+            data.setValue(visitIntNumber(ctx.intNumber()));
+        }
+
+        if (ctx.floatNumber() != null) {
+            data.setValue(visitFloatNumber(ctx.floatNumber()));
+        }
+        if (ctx.doubleNumber() != null) {
+            data.setValue(visitDoubleNumber(ctx.doubleNumber()));
+        }
+        if (ctx.STRING() != null) {
+            String sub = ctx.STRING().getText();
+            sub = sub.substring(1,sub.length()-1);
+            data.setValue(sub);
+        }
+        if (ctx.STRING_singl() != null) {
+            String sub = ctx.STRING_singl().getText();
+            sub = sub.substring(1,sub.length()-1);
+            data.setValue(sub);
+        }
+        if (ctx.bool() != null) {
+            data.setValue( visitBool(ctx.bool()));
+        }
+
+        return data;
+    }
+
+    @Override
+    public String visitIntNumber(DartParser.IntNumberContext ctx) {
+        return ctx.INT_NUM().getText();
+    }
+
+    @Override
+    public String visitFloatNumber(DartParser.FloatNumberContext ctx) {
+        return ctx.FLOAT_NUM().getText();
+    }
+
+    @Override
+    public String visitDoubleNumber(DartParser.DoubleNumberContext ctx) {
+        return ctx.DOUBLE_NUM().getText();
+    }
+
+    @Override
+    public String visitBool(DartParser.BoolContext ctx) {
+
+        if (ctx.TRUE() != null) {
+            return ctx.TRUE().getText();
+        }
+
+        if (ctx.FALSE() != null) {
+            return ctx.FALSE().getText();
         }
         return null;
     }
@@ -1192,7 +1277,9 @@ public class MyVisitor extends DartParserBaseVisitor {
         FileManagement.writeToTheFile("style.css" ,FileManagement.CssCode );
         int count = FileManagement.htmlFiles.size();
       //  FileManagement.CreateFile("../screen-"+count+".php");
-        FileManagement.writeToTheFile("screen-"+count+".php" , FileManagement.htmlFiles.get(Helper.currentHtmlName));
+        String fileName = Helper.currentHtmlName;
+        fileName = fileName.substring(6 , fileName.length()-5);
+        FileManagement.writeToTheFile(fileName +".php" , FileManagement.htmlFiles.get(Helper.currentHtmlName));
 
         return widget;
     }
@@ -1760,8 +1847,65 @@ public class MyVisitor extends DartParserBaseVisitor {
 
     @Override
     public Widget visitAppBar(DartParser.AppBarContext ctx) {
+
+        AppBar appBar = new AppBar();
+
+        FileManagement.addToCssFile("."+appBar.getWidgetName()+"{\n" +
+               " display: flex;\n" +
+                "        position: fixed;\n" +
+                "        justify-content: space-between;\n" +
+                "        align-items: center;\n" +
+                "        padding: 24px;\n" +
+                "        width: 100%;" +
+                "        top: 0;\n" );
+        FileManagement.addToHtmlFile(Helper.currentHtmlName , "    <div class=\""+appBar.getWidgetName()+"\">\n");
+
+        if (ctx.BackgroundColor(1)!=null )
+        {
+            Token idToken =ctx.BackgroundColor(1).getSymbol();
+            int line = idToken.getLine();
+            Helper.symbolTable.getErrorMassages().add("Error  : It is not allowed to repeat use property 'backgroundColor' in 'AppBar' line"+line+".");
+            return null ;
+        }
+
+        if (ctx.colors(0)!= null) {
+
+            String color = visitColors(ctx.colors(0));
+            FileManagement.addToCssFile( "   background-color:"+ color+ ";\n" );
+        }
+        FileManagement.addToCssFile("}\n");
+
+
+        if (ctx.text(0) != null) {
+            visitText(ctx.text(0));
+        }
+        if (ctx.Actions(1) != null) {
+            Token idToken =ctx.Actions(1).getSymbol();
+            int line = idToken.getLine();
+            Helper.symbolTable.getErrorMassages().add("Error  : It is not allowed to repeat use property 'actions' in 'AppBar' line"+line+".");
+
+        }
+        if (ctx.listOfWidget(0) != null) {
+            visitListOfWidget(ctx.listOfWidget(0));
+        }
+
+        FileManagement.addToHtmlFile(Helper.currentHtmlName , "</div>");
+
         return null;
     }
+
+    @Override
+    public String visitColors(DartParser.ColorsContext ctx) {
+        if (ctx.ID() != null) {
+            return ctx.ID().getText();
+        }
+        if (ctx.Sh() != null) {
+            return ctx.Sh().getText();
+        }
+        return null;
+    }
+
+
 
     ///--------------<<< Visit FloatingActionButton Widget >>>----------
 
@@ -1771,11 +1915,10 @@ public class MyVisitor extends DartParserBaseVisitor {
 
         FloatingActionButton button = new FloatingActionButton();
 
-        String link = "#" ;
         if (ctx.onPressed() != null) {
             visitOnPressed(ctx.onPressed());
         }
-        FileManagement.addToHtmlFile( Helper.currentHtmlName , " <a href="+link+" class=\"floating-button\">+</a>  ");
+        FileManagement.addToHtmlFile( Helper.currentHtmlName , " <a href="+Helper.link+" class=\"floating-button\">+</a>  ");
 
         String cssCode = ".floating-button {\n" +
                 "  position: fixed;\n" +
@@ -1861,18 +2004,42 @@ public class MyVisitor extends DartParserBaseVisitor {
 
     @Override
     public Object visitNavigator(DartParser.NavigatorContext ctx) {
-        ObjectClass link = visitObjectClass(ctx.objectClass());
-        if(link.objectParameters!=null)
+
+        ObjectClass link = new ObjectClass();
+
+        if( ctx.objectClass() != null)
         {
-             FileManagement.addToHtmlFile(Helper.currentHtmlName , "<?php ");
-            for (ObjectParameter parameter : link.objectParameters.getObjectParameters()) {
-                 FileManagement.addToHtmlFile(Helper.currentHtmlName , "\n $__SESSION["+parameter.objectName+"]=Map varible value");
+            link = visitObjectClass(ctx.objectClass());
+
+            if (link.objectParameters!=null ){
+
+                FileManagement.addToHtmlFile(Helper.currentHtmlName, "<?php ");
+
+                if(!link.objectParameters.getObjectParameters().isEmpty()) {
+
+                FileManagement.addToHtmlFile(Helper.currentHtmlName, "\n $_SESSION['data'] = array(");
+
+                for (ObjectParameter parameter : link.objectParameters.getObjectParameters()) {
+
+                  //  System.out.println(parameter.getParameterName() +" << >> "+ parameter.getData().getValue());
+                    FileManagement.addToHtmlFile(Helper.currentHtmlName, "\n'" + parameter.getParameterName() + "'=>'" + parameter.getData().getValue() + "',");
+                }
+                FileManagement.addToHtmlFile(Helper.currentHtmlName, ");");
+
             }
-             FileManagement.addToHtmlFile(Helper.currentHtmlName , "?>");
+                FileManagement.addToHtmlFile(Helper.currentHtmlName, "?>");
+
+            }
         }
-        System.out.println(link+"Sdasdasda");
-         FileManagement.addToHtmlFile(Helper.currentHtmlName , "<a href=\""+link.name+".php\" class=\"floating-button\">+</a>");
-        return super.visitNavigator(ctx);
+        if (Helper.screens.containsKey(link.ObjectName))
+        {
+            Helper.link = link.ObjectName+".php";
+
+        }
+        else {
+            Helper.symbolTable.getErrorMassages().add("Error :target '"+link.ObjectName+"' of navigator doesn't exist.");
+        }
+        return null;
     }
 
 
@@ -1970,6 +2137,9 @@ public class MyVisitor extends DartParserBaseVisitor {
 
         return null;
     }
+
+
+
 }
 
 
