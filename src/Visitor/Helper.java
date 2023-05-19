@@ -25,7 +25,7 @@ public class Helper
     public static HashMap< String , Widget> widgets = new HashMap<String , Widget>();
     public static HashMap< String , Integer > countTypeOfWidget = new HashMap<String , Integer>();
 
-    public HashMap< String , String > screens = new HashMap<>();
+    public static HashMap< String , String > screens = new HashMap<>();
 
 
     public  static Set<String> navigatorClass = new HashSet<>();
@@ -35,6 +35,8 @@ public class Helper
     public static  HashMap < String , FileManagement > files = new HashMap<>();
 
     public static String currentHtmlName="Files\\main.dart";
+
+    public static String link = "#";
 
     public static void generation(String filePath) throws IOException {
 

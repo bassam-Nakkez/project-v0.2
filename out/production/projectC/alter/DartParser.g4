@@ -202,7 +202,7 @@ objectParameter :ID CO NEW? (
                 |arrowAndAnonFun
                 |OB NEW? call (COM call )* CB
                 |cond
-                | FALSE
+                |FALSE
                 |TRUE )
                 ;
 
@@ -224,10 +224,6 @@ decVar
 
 
 
-num  :INT_NUM                #intNumber
-        |FLOAT_NUM              #floatNumber
-        |DOUBLE_NUM             #doubleNumber
-        ;
 
 this :  THIS DOT call | THIS DOT ID;
 
@@ -249,10 +245,14 @@ data
  |STRING_singl
  |this
  |bool
- |num
+ |intNumber
+ |floatNumber
+ |doubleNumber
  ;
 
-
+intNumber:INT_NUM;
+floatNumber:FLOAT_NUM;
+doubleNumber:DOUBLE_NUM;
 
  comparsion
  : expr LE expr
@@ -318,9 +318,10 @@ identi
 
   widget: listOfWidget? SCO;
 
-  listOfWidget: container COM?
-          | sizedBox COM?
+  listOfWidget: scaffold COM?
           | text  COM?
+          | container COM?
+          | sizedBox COM?
           | padding  COM?
           | row  COM?
           | column  COM?
@@ -328,7 +329,6 @@ identi
           | paddingWidget  COM?
           | center COM?
           | image
-          | scaffold COM?
           | materialApp
           | textFiled COM?
           | listView COM?
@@ -374,11 +374,11 @@ alignmentY :TOP | Bottom | Center;
 
 // Color parameter
 color: colorName | colorHEX | colorRGB | colorHSV ;
-colorName:  ColorName Colors ID | ColorName Colors ID OP INT_NUM CP COM?;
+colorName: ColorName Colors ID | ColorName Colors ID OP INT_NUM CP COM?;
 colorHEX : POUND HEXDIGIT HEXDIGIT HEXDIGIT HEXDIGIT COM?;
 colorRGB : COLOR INT_NUM COM INT_NUM COM INT_NUM CP COM?;
 colorHSV : ColorFromHSV (FLOAT_NUM| INT_NUM) COM (FLOAT_NUM| INT_NUM) COM (FLOAT_NUM| INT_NUM) CP COM?;
-
+colors:    Colors ID  | Sh ;
 
 //----------------- text Widget and its parameters -------------
 
@@ -479,11 +479,13 @@ paddingSize : FLOAT_NUM | edgeInsets | ALL | Symmetric | HorizontalName | Vertic
 //----------------- Scaffold Widget and its parameters -------------
 
 
-scaffold : Scaffold OP appBar? body?  (FloatingActionButtonProp floatingActionButton)? CP ;
+scaffold : Scaffold OP appBar? body?  (FloatingActionButtonProp floatingActionButton)? CP
+         | Scaffold OP  (FloatingActionButtonProp floatingActionButton)?  appBar? body? CP  ;
+
 
 body: Body listOfWidget;
-appBar: AppBar AppBarPara title? CP COM?;
-title: Title listOfWidget COM?;
+appBar : AppBar AppBarPara ( Title text | Actions CO listOfWidget| BackgroundColor CO colors)* CP COM?;
+
 
 floatingActionButton: FloatingActionButton OP onPressed color? child? CP COM?;
 onPressed: OnPressed OP CP START block END COM? ;

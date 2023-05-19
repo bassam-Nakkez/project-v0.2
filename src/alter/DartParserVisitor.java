@@ -414,27 +414,6 @@ public interface DartParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDecVar(DartParser.DecVarContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code intNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIntNumber(DartParser.IntNumberContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code floatNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFloatNumber(DartParser.FloatNumberContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code doubleNumber}
-	 * labeled alternative in {@link DartParser#num}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDoubleNumber(DartParser.DoubleNumberContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link DartParser#this}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -452,6 +431,24 @@ public interface DartParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitData(DartParser.DataContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DartParser#intNumber}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntNumber(DartParser.IntNumberContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DartParser#floatNumber}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatNumber(DartParser.FloatNumberContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DartParser#doubleNumber}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoubleNumber(DartParser.DoubleNumberContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DartParser#comparsion}.
 	 * @param ctx the parse tree
@@ -626,6 +623,12 @@ public interface DartParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitColorHSV(DartParser.ColorHSVContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DartParser#colors}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColors(DartParser.ColorsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DartParser#text}.
 	 * @param ctx the parse tree
@@ -848,12 +851,6 @@ public interface DartParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAppBar(DartParser.AppBarContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link DartParser#title}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTitle(DartParser.TitleContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DartParser#floatingActionButton}.
 	 * @param ctx the parse tree

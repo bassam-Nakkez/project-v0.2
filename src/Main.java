@@ -31,8 +31,10 @@ public class Main {
             try
             {
               //  String projectDir = System.getProperty("user.dir");
-              // FileManagement.openFile("screen-1.php" );
-                Desktop.getDesktop().browse(URI.create("http://localhost/gitHub//project-v0.2//screen-1.php"));
+               //FileManagement.openFile("screen-1.php" );
+                String fileName = Helper.currentHtmlName;
+                fileName = fileName.substring(6 , fileName.length()-5);
+                Desktop.getDesktop().browse(URI.create("http://localhost/gitHub//project-v0.2//"+fileName+".php"));
 
 
             }

@@ -1,5 +1,6 @@
 package AST.ClassAndObject.Object;
 
+import AST.Parameter;
 import AST.Statements.Call;
 import AST.DataType.Data;
 import AST.Functions.AnonymousFunction;
@@ -8,10 +9,36 @@ public class ObjectParameter extends ObjectNode {
 
     public String objectName;
     public ObjectClass objectClass = null;
-    public String ID = null ;
+    public String parameterName = null ;
     public Call call = null;
     public AnonymousFunction anonymousFunction = null;
     public Data data = null;
+
+    public void copy(ObjectParameter obj)
+    {
+        if (this.objectName != null){
+            obj.setObjectName(this.objectName);
+
+        }
+        if (this.parameterName != null) {
+            obj.setParameterName(this.parameterName);
+
+        }
+
+        if (this.call != null)       {
+            obj.setCall(this.call);
+
+        }
+
+
+        if (this.data != null)
+        {
+            obj.setData(this.data);
+
+        }
+
+
+    }
 
     public String getObjectName() {
         return objectName;
@@ -29,12 +56,12 @@ public class ObjectParameter extends ObjectNode {
         this.objectClass = objectClass;
     }
 
-    public String getID() {
-        return ID;
+    public String getParameterName() {
+        return parameterName;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setParameterName(String parameterName) {
+        this.parameterName = parameterName;
     }
 
     public Call getCall() {
@@ -63,7 +90,7 @@ public class ObjectParameter extends ObjectNode {
 
     @Override
     public String toString() {
-        return "ObjectParameter{"  + objectName + '\n'  + objectClass.toString() +"\n" + ID + "\n"  + call.toString() +"\n" + anonymousFunction.toString() +"\n"+ data.toString() +
+        return "ObjectParameter{"  + objectName + '\n'  + objectClass.toString() +"\n" + parameterName + "\n"  + call.toString() +"\n" + anonymousFunction.toString() +"\n"+ data.toString() +
                 '}';
     }
 }
